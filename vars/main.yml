@@ -1,0 +1,147 @@
+---
+
+rds_alarms_instance_class:
+  db.t1.micro:
+    cpu: 1
+    ecu: 1
+    memory: 0.615
+    ebs: "No"
+    network: Very Low
+  db.m1.small:
+    cpu: 1
+    ecu: 1
+    memory: 1.7
+    ebs: "No"
+    network: Very Low
+  db.m4.large:
+    cpu: 2
+    ecu: 6.5
+    memory: 8
+    ebs: "450 Mbps"
+    network: Moderate
+  db.m4.xlarge:
+    cpu: 4
+    ecu: 13
+    memory: 16
+    ebs: "750 Mbps"
+    network: High
+  db.m4.2xlarge:
+    cpu: 8
+    ecu: 25.5
+    memory: 32
+    ebs: "1000 Mbps"
+    network: High
+  db.m4.4xlarge:
+    cpu: 16
+    ecu: 53.5
+    memory: 64
+    ebs: "2000 Mbps"
+    network: High
+  db.m4.10xlarge:
+    cpu: 40
+    ecu: 124.5
+    memory: 160
+    ebs: "4000 Mbps"
+    network: 10 GBps
+  db.r3.large:
+    cpu: 2
+    ecu: 6.5
+    memory: 15
+    ebs: "No"
+    network: Moderate
+  db.r3.xlarge:
+    cpu: 4
+    ecu: 13
+    memory: 30.5
+    ebs: "500 Mbps"
+    network: Moderate
+  db.r3.2xlarge:
+    cpu: 8
+    ecu: 26
+    memory: 61
+    ebs: "1000 Mbps"
+    network: High
+  db.r3.4xlarge:
+    cpu: 16
+    ecu: 52
+    memory: 122
+    ebs: "2000 Mbps"
+    network: High
+  db.r3.8xlarge:
+    cpu: 32
+    ecu: 104
+    memory: 244
+    ebs: "No"
+    network: 10 Gbps
+  db.t2.micro:
+    cpu: 1
+    ecu: 1
+    memory: 1
+    ebs: "No"
+    network: Low
+  db.t2.small:
+    cpu: 1
+    ecu: 1
+    memory: 2
+    ebs: "No"
+    network: Low
+  db.t2.medium:
+    cpu: 2
+    ecu: 2
+    memory: 4
+    ebs: "No"
+    network: Moderate
+  db.t2.large:
+    cpu: 2
+    ecu: 2
+    memory: 8
+    ebs: "No"
+    network: Moderate
+  db.m3.medium:
+    cpu: 1
+    ecu: 3
+    memory: 3.75
+    ebs: "No"
+    network: Moderate
+  db.m3.large:
+    cpu: 2
+    ecu: 6.5
+    memory: 7.5
+    ebs: "No"
+    network: Moderate
+  db.m3.xlarge:
+    cpu: 4
+    ecu: 13
+    memory: 15
+    ebs: "500 Mbps"
+    network: High
+  db.m3.2xlarge:
+    cpu: 8
+    ecu: 26
+    memory: 30
+    ebs: "1000 Mbps"
+    network: High
+  db.m2.xlarge:
+    cpu: 2
+    ecu: 6.5
+    memory: 17.1
+    ebs: "No"
+    network: Moderate
+  db.m2.2xlarge:
+    cpu: 4
+    ecu: 13
+    memory: 34.2
+    ebs: "500 Mbps"
+    network: Moderate
+  db.m2.4xlarge:
+    cpu: 8
+    ecu: 26
+    memory: 68.4
+    ebs: "1000 Mbps"
+    network: High
+  db.cr1.8xlarge:
+    cpu: 32
+    ecu: 88
+    memory: 244
+    ebs: "No"
+    network: 10 Gbps

@@ -1,0 +1,10 @@
+---
+
+- name: describe instance
+  shell: aws --region="{{ rds_alarms_region }}" rds describe-db-instances
+  register: rds_alarms_instance_details
+
+- name: Create alarms
+  include: create_alarms.yml
+  with_items: "{{ (rds_alarms_instance_details.stdout | from_json).DBInstances }}"
+  when: "item.DBInstanceIdentifier in (rds_alarms_db_instances.keys())"
