@@ -1,0 +1,71 @@
+---
+
+- include: create_cpu_alarm.yml
+  vars:
+    rds_alarms_type: warning
+    rds_alarms_threshold: "{{ rds_alarms_db_instances[item.DBInstanceIdentifier]['warning_threshold'] | default(rds_alarms_warning_threshold) }}"
+
+- include: create_cpu_alarm.yml
+  vars:
+    rds_alarms_type: critical
+    rds_alarms_threshold: "{{ rds_alarms_db_instances[item.DBInstanceIdentifier]['critical_threshold'] | default(rds_alarms_critical_threshold) }}"
+
+- include: create_memory_alarm.yml
+  vars:
+    rds_alarms_type: warning
+    rds_alarms_threshold: "{{ (rds_alarms_instance_class[item.DBInstanceClass].memory | float) * 10000000 * (100 - (rds_alarms_db_instances[item.DBInstanceIdentifier]['warning_threshold'] | default(rds_alarms_warning_threshold))) }}"
+
+- include: create_memory_alarm.yml
+  vars:
+    rds_alarms_type: critical
+    rds_alarms_threshold: "{{ (rds_alarms_instance_class[item.DBInstanceClass].memory | float) * 10000000 * (100 - (rds_alarms_db_instances[item.DBInstanceIdentifier]['critical_threshold'] | default(rds_alarms_critical_threshold))) }}"
+
+- include: create_storage_alarm.yml
+  vars:
+    rds_alarms_type: warning
+    rds_alarms_threshold: "{{ (item.AllocatedStorage | float) * 10000000 * (100 - (rds_alarms_db_instances[item.DBInstanceIdentifier]['warning_threshold'] | default(rds_alarms_warning_threshold))) }}"
+
+- include: create_storage_alarm.yml
+  vars:
+    rds_alarms_type: critical
+    rds_alarms_threshold: "{{ (item.AllocatedStorage | float) * 10000000 * (100 - (rds_alarms_db_instances[item.DBInstanceIdentifier]['critical_threshold'] | default(rds_alarms_critical_threshold))) }}"
+
+- include: create_connections_alarm.yml
+  vars:
+    rds_alarms_type: warning
+    rds_alarms_threshold: "{{ rds_alarms_db_instances[item.DBInstanceIdentifier]['warning_db_connections_threshold'] }}"
+
+- include: create_connections_alarm.yml
+  vars:
+    rds_alarms_type: warning
+    rds_alarms_threshold: "{{rds_alarms_db_instances[item.DBInstanceIdentifier]['critical_db_connections_threshold']}}"
+
+- include: create_cpu_credits_alarm.yml
+  vars:
+    rds_alarms_type: warning
+    rds_alarms_threshold: "{{ rds_alarms_db_instances[item.DBInstanceIdentifier]['credit_warning_threshold'] | default(rds_alarms_warning_cpu_credits_threshold) }}"
+  when: "'db.t2.' in item.DBInstanceClass"
+
+- include: create_cpu_credits_alarm.yml
+  vars:
+    rds_alarms_type: critical
+    rds_alarms_threshold: "{{ rds_alarms_db_instances[item.DBInstanceIdentifier]['credit_critical_threshold'] | default(rds_alarms_critical_cpu_credits_threshold) }}"
+  when: "'db.t2.' in item.DBInstanceClass"
+
+- name: Create high replica lag alarm
+  ec2_metric_alarm:
+    state: present
+    region: "{{ rds_alarms_region | default(rds_alarms_db_instances[item.DBInstanceIdentifier]['region']) }}"
+    name: "{{ 'rds-' + item.DBInstanceIdentifier + '-replica-lag-high' }}"
+    description: "{{ 'High Replica Lag on ' + item.DBInstanceIdentifier }}"
+    metric: "ReplicaLag"
+    namespace: "AWS/RDS"
+    statistic: Average
+    comparison: ">="
+    threshold: "{{rds_alarms_db_instances[item.DBInstanceIdentifier]['replica_lag_threshold']}}"
+    period: "{{ rds_alarms_period }}"
+    evaluation_periods: "{{ rds_alarms_evaluation_periods }}"
+    unit: "Seconds"
+    dimensions: {"DBInstanceIdentifier": "{{ item.DBInstanceIdentifier }}"}
+    alarm_actions: "{{ rds_alarms_common_action_list | union(rds_alarms_db_instances[item.DBInstanceIdentifier]['alarm_action_list']) }}"
+  when: "'ReadReplicaSourceDBInstanceIdentifier' in (item.keys())"

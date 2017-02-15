@@ -1,0 +1,17 @@
+
+- name: Create free memory alarm
+  ec2_metric_alarm:
+    state: present
+    region: "{{ rds_alarms_region | default(rds_alarms_db_instances[item.DBInstanceIdentifier]['region']) }}"
+    name: "{{ 'rds-' + item.DBInstanceIdentifier + '-memory-' + rds_alarms_type  }}"
+    description: "{{ rds_alarms_type + ' - Low free memory for ' + item.DBInstanceIdentifier  }}"
+    metric: "FreeableMemory"
+    namespace: "AWS/RDS"
+    statistic: Average
+    comparison: "<="
+    threshold: "{{ rds_alarms_threshold }}"
+    period: "{{ rds_alarms_period }}"
+    evaluation_periods: "{{ rds_alarms_evaluation_periods }}"
+    unit: "Bytes"
+    dimensions: {"DBInstanceIdentifier": "{{ item.DBInstanceIdentifier }}"}
+    alarm_actions: "{{ rds_alarms_common_action_list | union(rds_alarms_db_instances[item.DBInstanceIdentifier]['alarm_action_list']) }}"

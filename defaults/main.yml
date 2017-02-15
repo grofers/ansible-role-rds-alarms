@@ -1,0 +1,10 @@
+---
+
+rds_alarms_period: 60
+rds_alarms_common_action_list: []
+rds_alarms_evaluation_periods: 2
+rds_alarms_warning_threshold: 75.0
+rds_alarms_critical_threshold: 90.0
+
+rds_alarms_warning_cpu_credits_threshold: 30
+rds_alarms_critical_cpu_credits_threshold: 15
