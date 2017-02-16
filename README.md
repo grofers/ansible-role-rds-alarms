@@ -11,7 +11,7 @@ The format of name of alarms created is:
 * [boto](https://pypi.python.org/pypi/boto/)
 * [awscli](https://aws.amazon.com/cli/)
 * An IAM Policy with the following permissions:
-```
+```json
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -43,8 +43,8 @@ The format of name of alarms created is:
 
 ## Installation
 To install, just run
-```
-$ ansible-galaxy install git+git@github.com:grofers/ansible-role-hashicorp-vault.git
+```shell
+$ ansible-galaxy install grofers.rds-alarms
 ```
 
 ## Role Variables
@@ -62,7 +62,7 @@ metric is evaluated before final calculation
 * `rds_alarms_critical_cpu_credits_threshold` - Threshold for CPU Credits
 (default - 15)
 * `rds_alarms_db_instances` - Dict with the following format:
-```
+```yaml
 rds_alarms_db_instances:
   <rds-instance-identifier>:
     warning_db_connections_threshold: 100
@@ -76,8 +76,14 @@ rds_alarms_db_instances:
 ```
 
 ## Example Playbook
+This playbook will create alarms for `my-rds-instance-identifier` with the
+default thresholds. Where as for alarms created for
+`my-replica-rds-instance-identifier` will be created with warning threshold of
+80% and critical threshold will be the default value(90%). If the instance is a
+replica then an alarm will also be created for the replica lag. For every t2
+instance, alarms are also created for remaining CPU credits.
 
-```
+```yaml
 - hosts: localhost
   connection: local
   vars:
@@ -107,12 +113,7 @@ rds_alarms_db_instances:
     - rds-alarms
 
 ```
-This playbook will create alarms for `my-rds-instance-identifier` with the
-default thresholds. Where as for alarms created for
-`my-replica-rds-instance-identifier` will be created with warning threshold of
-80% and critical threshold will be the default value(90%). If the instance is a
-replica then an alarm will also be created for the replica lag. For every t2
-instance, alarms are also created for remaining CPU credits.
+
 
 ## Limitations
 You need to create multiple playbooks for different regions.
