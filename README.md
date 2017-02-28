@@ -2,8 +2,6 @@
 # RDS Alarms
 
 Creates warning and critical alarms for RDS instances on Amazon CloudWatch.
-The format of name of alarms created is:
-`rds-<instance_name>-<metric_name>-<alert_type>`
 
 ## Requirements
 
@@ -74,6 +72,13 @@ rds_alarms_db_instances:
     credit_critical_threshold: 15 # Optional
     replica_lag_threshold: 1800 # Required Only for replicas. Units seconds
 ```
+
+## Conventions
+The format of name of alarms created in Amazon CloudWatch is:
+`rds-<instance_name>-<metric_name>-<alert_type>`.
+
+For example, `warning` alarm for `CPU` for an instance with identifier
+`my-rds-instance` will be created as `rds-my-rds-instance-cpu-warning`.
 
 ## Example Playbook
 This playbook will create alarms for `my-rds-instance-identifier` with the
