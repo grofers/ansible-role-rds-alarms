@@ -1,7 +1,11 @@
 [![Build Status](https://travis-ci.org/grofers/ansible-role-rds-alarms.svg?branch=master)](https://travis-ci.org/grofers/ansible-role-rds-alarms)
+
 # RDS Alarms
 
-Creates warning and critical alarms for RDS instances on Amazon CloudWatch.
+Creates warning and critical alarms for RDS instances on Amazon CloudWatch. For
+more details, check out the [blog post](https://lambda.grofers.com/2017/02/28/ansible-at-grofers-part-2-managing-postgresql/).
+
+:boom: Battle-tested at [Grofers](https://grofers.com)
 
 ## Requirements
 
@@ -40,6 +44,7 @@ Creates warning and critical alarms for RDS instances on Amazon CloudWatch.
 ```
 
 ## Installation
+
 To install, just run
 ```shell
 $ ansible-galaxy install grofers.rds-alarms
@@ -74,6 +79,7 @@ rds_alarms_db_instances:
 ```
 
 ## Conventions
+
 The format of name of alarms created in Amazon CloudWatch is:
 `rds-<instance_name>-<metric_name>-<alert_type>`.
 
@@ -81,6 +87,7 @@ For example, `warning` alarm for `CPU` for an instance with identifier
 `my-rds-instance` will be created as `rds-my-rds-instance-cpu-warning`.
 
 ## Example Playbook
+
 This playbook will create alarms for `my-rds-instance-identifier` with the
 default thresholds. Where as for alarms created for
 `my-replica-rds-instance-identifier` will be created with warning threshold of
@@ -121,6 +128,7 @@ instance, alarms are also created for remaining CPU credits.
 
 
 ## Limitations
+
 You need to create multiple playbooks for different regions.
 
 ## License
