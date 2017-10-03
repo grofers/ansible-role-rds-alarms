@@ -70,6 +70,8 @@ rds_alarms_db_instances:
   <rds-instance-identifier>:
     warning_db_connections_threshold: 100
     critical_db_connections_threshold: 200
+    warning_burst_balance_threshold: 100
+    critical_burst_balance_threshold: 200
     alarm_action_list: ["arn:aws:sns:us-east-1:9783248248:MYALARM"]
     critical_threshold: 90 # Optional
     warning_threshold: 75 # Optional

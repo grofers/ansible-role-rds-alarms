@@ -52,6 +52,18 @@
     rds_alarms_threshold: "{{ rds_alarms_db_instances[item.DBInstanceIdentifier]['credit_critical_threshold'] | default(rds_alarms_critical_cpu_credits_threshold) }}"
   when: "'db.t2.' in item.DBInstanceClass"
 
+- include: create_burst_balance_alarm.yml
+  vars:
+    rds_alarms_type: warning
+    rds_alarms_threshold: "{{ 100 - (rds_alarms_db_instances[item.DBInstanceIdentifier]['warning_burst_balance_threshold'] | default(rds_alarms_warning_threshold)) }}"
+  when: "item.StorageType == 'gp2'"
+
+- include: create_burst_balance_alarm.yml
+  vars:
+    rds_alarms_type: critical
+    rds_alarms_threshold: "{{ 100 - (rds_alarms_db_instances[item.DBInstanceIdentifier]['critical_burst_balance_threshold'] | default(rds_alarms_critical_threshold)) }}"
+  when: "item.StorageType == 'gp2'"
+
 - name: Create high replica lag alarm
   ec2_metric_alarm:
     state: present
