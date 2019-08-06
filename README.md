@@ -9,7 +9,7 @@ more details, check out the [blog post](https://lambda.grofers.com/2017/02/28/an
 
 ## Requirements
 
-* A topic in [AWS SNS](https://aws.amazon.com/sns/)
+* A topic in [AWS SNS](https://aws.amazon.com/sns/)(in the same region as RDS instance)
 * [boto](https://pypi.python.org/pypi/boto/)
 * [awscli](https://aws.amazon.com/cli/)
 * An IAM Policy with the following permissions:
@@ -53,7 +53,7 @@ $ ansible-galaxy install grofers.rds-alarms
 ## Role Variables
 
 * `rds_alarms_region` - AWS region (Required)
-* `rds_alarms_common_action_list` - List of ARN of topics in AWS SNS
+* `rds_alarms_common_action_list` - List of ARN of topics in AWS SNS(in the same region as RDS instance)
 * `rds_alarms_period` - Time (in seconds) between metric evaluations
 * `rds_alarms_evaluation_periods` - The number of times in which the
 metric is evaluated before final calculation
