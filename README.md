@@ -97,41 +97,58 @@ default thresholds. Where as for alarms created for
 replica then an alarm will also be created for the replica lag. For every t2
 instance, alarms are also created for remaining CPU credits.
 
+Variables File `us-east-1.json`:
+```json
+{
+	"rds_alarms_common_action_list": [
+		"arn:aws:sns:us-east-1:9783248248:ALARMS"
+	],
+	"rds_alarms_period": 60,
+	"rds_alarms_evaluation_periods": 2,
+	"rds_alarms_region": "us-east-1",
+	"rds_alarms_warning_threshold": 70,
+	"rds_alarms_critical_threshold": 90,
+	"rds_alarms_warning_cpu_credits_threshold": 60,
+	"rds_alarms_critical_cpu_credits_threshold": 30,
+	"rds_alarms_db_instances": {
+		"my-rds-instance-identifier": {
+			"warning_db_connections_threshold": 100,
+			"critical_db_connections_threshold": 200,
+			"alarm_action_list": [
+				"arn:aws:sns:us-east-1:9783248248:MYALARM"
+			]
+		},
+		"my-replica-rds-instance-identifier": {
+			"warning_threshold": 80,
+			"warning_db_connections_threshold": 100,
+			"critical_db_connections_threshold": 200,
+			"alarm_action_list": [
+				"arn:aws:sns:us-east-1:9783248248:MYALARM"
+			],
+			"credit_warning_threshold": 20,
+			"credit_critical_threshold": 10,
+			"replica_lag_threshold": 1800
+		}
+	}
+}
+```
+
+Ansible Playbook `rds-alarms.yaml`:
 ```yaml
 - hosts: localhost
   connection: local
-  vars:
-    rds_alarms_common_action_list:
-      - "arn:aws:sns:us-east-1:9783248248:ALARMS"
-    rds_alarms_period: 60
-    rds_alarms_evaluation_periods: 2
-    rds_alarms_region: us-east-1
-    rds_alarms_warning_threshold: 70
-    rds_alarms_critical_threshold: 90
-    rds_alarms_warning_cpu_credits_threshold: 60
-    rds_alarms_critical_cpu_credits_threshold: 30
-    rds_alarms_db_instances:
-      my-rds-instance-identifier: # this will use the defaults
-        warning_db_connections_threshold: 100
-        critical_db_connections_threshold: 200
-        alarm_action_list: ["arn:aws:sns:us-east-1:9783248248:MYALARM"]
-      my-replica-rds-instance-identifier:
-        warning_threshold: 80
-        warning_db_connections_threshold: 100
-        critical_db_connections_threshold: 200
-        alarm_action_list: ["arn:aws:sns:us-east-1:9783248248:MYALARM"]
-        credit_warning_threshold: 20
-        credit_critical_threshold: 10
-        replica_lag_threshold: 1800
   roles:
     - rds-alarms
 
 ```
 
+To create alarms, run the following command,
 
-## Limitations
+```
+ansible-playbook --extra-vars "@us-east-1.json" rds-alarms.yaml
+```
 
-You need to create multiple playbooks for different regions.
+You can create separate json files for separate regions/configs/groups and use them with the above playbook
 
 ## License
 
